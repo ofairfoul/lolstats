@@ -11,7 +11,7 @@ export default () => (
     <div className="container">
       <Jumbotron>
         <h1>Welcome!</h1>
-        <p>Use the search field above to find a summoner.</p>
+        <p>Use the search in the menu to find a summoner.</p>
       </Jumbotron>
     </div>
   </div>

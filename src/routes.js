@@ -15,8 +15,8 @@ export default () =>
   (
     <Switch>
       <Redirect exact from="/" to="/EUW" />
-      <Route path="/:region" component={Home} />
       <Route path="/:region/summoner/:summoner" component={Summoner} />
+      <Route path="/:region" component={Home} />
       <Route component={() => (<p>Not found</p>)} />
     </Switch>
   );

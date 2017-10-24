@@ -14,7 +14,7 @@ import FontAwesome from 'react-fontawesome';
 
 import { toPairs } from 'lodash';
 
-import { compose, withHandlers, mapProps } from 'recompose';
+import { compose, withHandlers, withProps, withState } from 'recompose';
 
 import regions from 'static/regions';
 
@@ -29,15 +29,23 @@ const regionsData =
 
 const enhancer = compose(
   withRouter,
+  withProps(({ match: { params: { region } } }) => ({ region })),
+  withState('summoner', 'summonerChange', ''),
   withHandlers({
     regionChange: ({ history, match: { path, params } }) => region => {
       history.push(buildPath(path, { ...params, region }));
     },
+    searchSummoners: ({ history, summoner, region, summonerChange }) => () => {
+      const summonerTrimmed = summoner.trim();
+      if (summonerTrimmed.length > 0) {
+        summonerChange('');
+        history.push(buildPath('/:region/summoner/:summoner', { summoner: summonerTrimmed, region }));
+      }
+    },
   }),
-  mapProps(({ match: { params: { region } }, regionChange }) => ({ region, regionChange })),
 );
 
-export default enhancer(({ region, regionChange }) => (
+export default enhancer(({ region, regionChange, summoner, summonerChange, searchSummoners }) => (
   <Navbar>
     <Navbar.Header>
       <Navbar.Brand>
@@ -64,9 +72,13 @@ export default enhancer(({ region, regionChange }) => (
       <Navbar.Form pullRight>
         <FormGroup>
           <InputGroup>
-            <FormControl type="text" placeholder="Search summoners" />
+            <FormControl
+              type="text"
+              placeholder="Search summoners"
+              onChange={({ target: { value } }) => summonerChange(value)}
+              value={summoner} />
             <InputGroup.Button>
-              <Button type="submit" bsStyle="primary">
+              <Button type="submit" bsStyle="primary" onClick={searchSummoners}>
                 <FontAwesome name="search" />
               </Button>
             </InputGroup.Button>

@@ -24,10 +24,12 @@ import config from 'kit/config';
 import counterReducer from 'reducers/counter';
 
 // Main component -- i.e. the 'root' React component in our app
-import Main from 'components/main';
+import Routes from './routes';
 
 // Init global styles.  These will be added to the resulting CSS automatically
 // without any class hashing.  Use this to include default or framework CSS.
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap-theme.css';
 import './styles.global.css';
 
 // ----------------------
@@ -92,7 +94,7 @@ if (SERVER) {
   // Pass in the schema to use for our internal GraphQL server.  Note we're
   // doing this inside a `SERVER` block to avoid importing a potentially large
   // file, which would then inflate our client bundle unnecessarily
-  config.setGraphQLSchema(require('src/graphql/schema').default);
+  config.setGraphQLSchema(require('src/schema').default);
 
   /* CUSTOM ROUTES */
 
@@ -205,4 +207,4 @@ if (SERVER) {
 
 // In app.js, we need to export the root component we want to mount as the
 // starting point to our app.  We'll just export the `<Main>` component.
-export default Main;
+export default Routes;

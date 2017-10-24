@@ -1,62 +1,83 @@
-// Schema for sample GraphQL server.
+/* eslint-disable no-param-reassign */
 
-// ----------------------
-// IMPORTS
+import { makeExecutableSchema } from 'graphql-tools';
+import Bluebird from 'bluebird';
 
-// GraphQL schema library, for building our GraphQL schema
-import {
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLSchema,
-} from 'graphql';
+import { Summoners, Matchlists, Champions } from 'modules/summoner/models';
+import Connector from 'common/connectors/lol';
+import regions from 'static/regions';
 
-// ----------------------
+const rootSchema = [`
 
-// GraphQL can handle Promises from its `resolve()` calls, so we'll create a
-// simple async function that returns a simple message.  In practice, `resolve()`
-// will generally pull from a 'real' data source such as a database
-async function getMessage() {
-  return {
-    text: `Hello from the GraphQL server @ ${new Date()}`,
-  };
-}
+  type Champion {
+    id: ID,
+    name: String
+  }
 
-// Message type.  Imagine this like static type hinting on the 'message'
-// object we're going to throw back to the user
-const Message = new GraphQLObjectType({
-  name: 'Message',
-  description: 'GraphQL server message',
-  fields() {
-    return {
-      text: {
-        type: GraphQLString,
-        resolve(msg) {
-          return msg.text;
-        },
-      },
-    };
+  type Matchlist {
+    id: ID
+    champion: Champion
+    timestamp: Int
+  }
+
+  type Summoner {
+    id: ID
+    name: String
+    profileIcon: String
+    summonerLevel: Int
+    recentMatchlists: [Matchlist]
+  }
+
+  type Region {
+    summonerByName(summoner: String): Summoner
+  }
+
+  type Query {
+    summonerByName(region: ID, summoner: String): Summoner
+    region(region: ID) : Region
+  }
+`];
+
+const rootResolvers = {
+  Query: {
+    region: (root, { region }, context) => {
+      const regionConfig = regions[region];
+      if (!regionConfig) {
+        return null;
+      }
+
+      const connector = new Connector({ apiDomain: regionConfig.api });
+
+      context.Summoners = new Summoners({ connector });
+      context.Matchlists = new Matchlists({ connector });
+      context.Champions = new Champions({ connector });
+      return regionConfig;
+    },
   },
-});
 
-// Root query.  This is our 'public API'.
-const Query = new GraphQLObjectType({
-  name: 'Query',
-  description: 'Root query object',
-  fields() {
-    return {
-      message: {
-        type: Message,
-        resolve() {
-          return getMessage();
-        },
-      },
-    };
+  Region: {
+    summonerByName: (region, { summoner }, context) =>
+      context.Summoners.getSummonerByName(summoner),
   },
+
+  Summoner: {
+    profileIcon: ({ profileIconId }) => `//ddragon.leagueoflegends.com/cdn/7.20.3/img/profileicon/${profileIconId}.png`,
+    recentMatchlists: ({ accountId }, args, context) =>
+      context.Matchlists.getRecentByAccount(accountId),
+  },
+
+  Matchlist: {
+    id: ({ gameId }) => gameId,
+    champion: ({ champion }, args, context) =>
+      context.Champions.getById(champion),
+  },
+
+};
+
+const executableSchema = makeExecutableSchema({
+  typeDefs: rootSchema,
+  resolvers: rootResolvers,
 });
 
-// The resulting schema.  We insert our 'root' `Query` object, to tell our
-// GraphQL server what to respond to.  We could also add a root `mutation`
-// if we want to pass mutation queries that have side-effects (e.g. like HTTP POST)
-export default new GraphQLSchema({
-  query: Query,
-});
+export default executableSchema;
+

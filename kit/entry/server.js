@@ -115,7 +115,6 @@ const createNeworkInterface = (() => {
       {
         // Attach the request's context, which certain GraphQL queries might
         // need for accessing cookies, auth headers, etc.
-        context,
       },
     );
   }
@@ -339,7 +338,6 @@ if (config.graphQLServer) {
     config.graphQLEndpoint,
     graphqlKoa(context => ({
       // Bind the current request context, so it's accessible within GraphQL
-      context,
       // Attach the GraphQL schema
       schema: config.graphQLSchema,
     })),

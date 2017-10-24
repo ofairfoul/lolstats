@@ -9,7 +9,7 @@ import {
 import { Redirect } from 'kit/lib/routing';
 
 import Home from 'modules/landing/landing';
-import Summoner from 'modules/summonor/summonor';
+import Summoner from 'modules/summoner/summoner';
 
 export default () =>
   (

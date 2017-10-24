@@ -1,0 +1,13 @@
+query summoner($region: ID!, $summonerName: String) {
+  region(region: $region) {
+    summonerByName(summoner: $summonerName) {
+      id
+      name
+      summonerLevel
+      profileIcon
+      recentMatchlists {
+        id
+      }
+    }
+  }
+}

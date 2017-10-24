@@ -18,7 +18,7 @@ import { compose, withHandlers, withProps, withState } from 'recompose';
 
 import regions from 'static/regions';
 
-import buildPath from 'util/buildPath';
+import buildPath from 'common/util/buildPath';
 
 const regionsData =
   toPairs(regions)

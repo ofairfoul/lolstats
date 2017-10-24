@@ -1,3 +1,4 @@
 /* Regular @import url statements work as you'd expect them to -- alternatively
 you can import locally, and they wind up in the resulting bundle */
 :global { @import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"; }
+:global { @import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"; }

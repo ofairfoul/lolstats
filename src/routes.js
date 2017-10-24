@@ -6,7 +6,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import Home from './modules/landing/landing';
+import Home from 'modules/landing/landing';
 
 export default () =>
   (

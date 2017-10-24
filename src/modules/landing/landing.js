@@ -1,47 +1,18 @@
 import React from 'react';
+import Header from 'common/components/header';
+
 import {
-  Navbar,
-  FormGroup,
-  FormControl,
-  Button,
-  InputGroup,
-  MenuItem,
-  NavDropdown,
-  Nav,
+  Jumbotron,
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import FontAwesome from 'react-fontawesome';
 
 export default () => (
   <div>
-    <Navbar>
-      <Navbar.Header>
-        <Navbar.Brand>
-          <Link to="/" ><FontAwesome name="rebel" /> LOLStats</Link>
-        </Navbar.Brand>
-        <Navbar.Toggle />
-      </Navbar.Header>
-      <Navbar.Collapse>
-        <Nav pullRight>
-          <NavDropdown title={
-            <span><FontAwesome name="globe" /> NA</span>
-          }>
-            <MenuItem>North America</MenuItem>
-          </NavDropdown>
-        </Nav>
-        <Navbar.Form pullRight>
-          <FormGroup>
-            <InputGroup>
-              <FormControl type="text" placeholder="Search summoners" />
-              <InputGroup.Button>
-                <Button type="submit" bsStyle="primary">
-                  <FontAwesome name="search" />
-                </Button>
-              </InputGroup.Button>
-            </InputGroup>
-          </FormGroup>
-        </Navbar.Form>
-      </Navbar.Collapse>
-    </Navbar>
+    <Header />
+    <div className="container">
+      <Jumbotron>
+        <h1>Welcome!</h1>
+        <p>Use the search field above to find a summoner.</p>
+      </Jumbotron>
+    </div>
   </div>
 );

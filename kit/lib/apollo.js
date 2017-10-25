@@ -40,6 +40,13 @@ export function getNetworkInterface(uri, opt) {
 
 // Creates a new browser client
 export function browserClient() {
+  // use relative path for production
+  if (process.env.NODE_ENV === 'production' && config.graphQLServer) {
+    return createClient({
+      networkInterface: getNetworkInterface(config.graphQLEndpoint),
+    });
+  }
+
   // If we have an internal GraphQL server, we need to append it with a
   // call to `getServerURL()` to add the correct host (in dev + production)
   const uri = config.graphQLServer

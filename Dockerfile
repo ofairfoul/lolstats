@@ -10,6 +10,7 @@ RUN npm i -g pm2
 
 # Add NPM package config
 ADD package*.json ./
+ADD yarn*.lock ./
 
 # Install everything (and clean up afterwards)
 RUN apk add --no-cache --virtual .gyp \
@@ -22,7 +23,7 @@ RUN apk add --no-cache --virtual .gyp \
     nasm \
     python \
     git \
-  && npm i \
+  && yarn \
   && apk del .gyp
 
 # Add the remaining project files

@@ -56,9 +56,11 @@ export default enhancer(({ region, regionChange, summoner, summonerChange, searc
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav pullRight>
-        <NavDropdown title={
-          <span><FontAwesome name="globe" /> {region}</span>
-        }>
+        <NavDropdown
+          id="nav-dropdown"
+          title={
+            <span><FontAwesome name="globe" /> {region}</span>
+          }>
           <MenuItem header>Choose a region</MenuItem>
           { regionsData.map(r => (
             <MenuItem

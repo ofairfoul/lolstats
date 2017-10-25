@@ -19,7 +19,7 @@ import moment from 'moment';
 
 import Header from 'common/components/header';
 
-import summonerQuery from './graphql/summoner.gql';
+import summonerQuery from '../graphql/summoner.gql';
 
 import css from './summoner.less';
 

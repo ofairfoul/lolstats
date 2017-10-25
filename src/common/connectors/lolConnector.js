@@ -4,7 +4,7 @@ import moment from 'moment';
 import DataLoader from 'dataloader';
 import { mapValues, toPairs } from 'lodash';
 
-import Limiter from 'common/limiters/limiter';
+import Limiter from 'common/util/limiter';
 import regions from 'staticData/regions';
 
 export const SUMMONERS = 'summoner-v3';

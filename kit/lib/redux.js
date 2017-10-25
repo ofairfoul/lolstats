@@ -79,7 +79,7 @@ export default function createNewStore(apolloClient) {
       ),
       // Enable Redux Devtools on the browser, for easy state debugging
       // eslint-disable-next-line no-underscore-dangle
-      (!SERVER && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
+      (!SERVER && process.env.NODE_ENV !== 'production' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
     ),
   );
 

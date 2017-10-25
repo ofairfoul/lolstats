@@ -5,7 +5,7 @@ import moment from 'moment';
 import { mapValues } from 'lodash';
 
 import { Summoners, Matchlists, Champions } from 'modules/summoner/models';
-import Connector from 'common/connectors/lol';
+import LolConnector from 'common/connectors/lolConnector';
 import regions from 'staticData/regions';
 
 const rootSchema = [`
@@ -40,7 +40,7 @@ const rootSchema = [`
 `];
 
 const staticDataConnectors =
-  mapValues(regions, (val, key) => new Connector({ region: key }));
+  mapValues(regions, (val, key) => new LolConnector({ region: key }));
 
 const rootResolvers = {
   Query: {
@@ -49,7 +49,7 @@ const rootResolvers = {
       if (!regionConfig) {
         return null;
       }
-      const connector = new Connector({ region });
+      const connector = new LolConnector({ region });
       context.Summoners = new Summoners({ connector });
       context.Matchlists = new Matchlists({ connector });
       context.Champions = new Champions({ connector: staticDataConnectors[region] });

@@ -6,10 +6,9 @@ import { mapValues } from 'lodash';
 
 import { Summoners, Matchlists, Champions } from 'modules/summoner/models';
 import Connector from 'common/connectors/lol';
-import regions from 'static/regions';
+import regions from 'staticData/regions';
 
 const rootSchema = [`
-
   type Champion {
     id: ID
     name: String
@@ -36,7 +35,6 @@ const rootSchema = [`
   }
 
   type Query {
-    summonerByName(region: ID, summoner: String): Summoner
     region(region: ID) : Region
   }
 `];

@@ -13,4 +13,5 @@ services:
       HOST: "0.0.0.0"
       BROWSER_HOST: "0.0.0.0"
       PORT: "8081"
+      LOL_API_KEY: "XXXXX"
     command: npm start

@@ -16,7 +16,7 @@ import { toPairs } from 'lodash';
 
 import { compose, withHandlers, withProps, withState } from 'recompose';
 
-import regions from 'static/regions';
+import regions from 'staticData/regions';
 
 import buildPath from 'common/util/buildPath';
 
@@ -35,7 +35,8 @@ const enhancer = compose(
     regionChange: ({ history, match: { path, params } }) => region => {
       history.push(buildPath(path, { ...params, region }));
     },
-    searchSummoners: ({ history, summoner, region, summonerChange }) => () => {
+    searchSummoners: ({ history, summoner, region, summonerChange }) => e => {
+      e.preventDefault();
       const summonerTrimmed = summoner.trim();
       if (summonerTrimmed.length > 0) {
         summonerChange('');
@@ -70,20 +71,22 @@ export default enhancer(({ region, regionChange, summoner, summonerChange, searc
         </NavDropdown>
       </Nav>
       <Navbar.Form pullRight>
-        <FormGroup>
-          <InputGroup>
-            <FormControl
-              type="text"
-              placeholder="Search summoners"
-              onChange={({ target: { value } }) => summonerChange(value)}
-              value={summoner} />
-            <InputGroup.Button>
-              <Button type="submit" bsStyle="primary" onClick={searchSummoners}>
-                <FontAwesome name="search" />
-              </Button>
-            </InputGroup.Button>
-          </InputGroup>
-        </FormGroup>
+        <form onSubmit={searchSummoners}>
+          <FormGroup>
+            <InputGroup>
+              <FormControl
+                type="text"
+                placeholder="Search summoners"
+                onChange={({ target: { value } }) => summonerChange(value)}
+                value={summoner} />
+              <InputGroup.Button>
+                <Button type="submit" bsStyle="primary">
+                  <FontAwesome name="search" />
+                </Button>
+              </InputGroup.Button>
+            </InputGroup>
+          </FormGroup>
+        </form>
       </Navbar.Form>
     </Navbar.Collapse>
   </Navbar>

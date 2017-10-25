@@ -14,7 +14,7 @@ import Summoner from 'modules/summoner/summoner';
 export default () =>
   (
     <Switch>
-      <Redirect exact from="/" to="/EUW" />
+      <Redirect exact from="/" to="/NA" />
       <Route path="/:region/summoner/:summoner" component={Summoner} />
       <Route path="/:region" component={Home} />
       <Route component={() => (<p>Not found</p>)} />

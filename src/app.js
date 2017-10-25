@@ -162,12 +162,6 @@ if (SERVER) {
   // you can pass a func to `config.getKoaApp()` that will be fed the `app`
   // instance directly.
   config.getKoaApp(app => {
-    // First, we'll add a new `engine` key to the app.context`
-    // prototype (that per-request `ctx` extends) that can be
-    // used in the middleware below, to set a `Powered-By` header.
-    // eslint-disable-next-line no-param-reassign
-    app.context.engine = 'ReactQL';
-
     // We'll also add a generic error handler, that prints out to the console.
     // Note: This is a 'lower-level' than `config.setErrorHandler()` because
     // it's not middleware -- it's for errors that happen at the server level
@@ -177,31 +171,6 @@ if (SERVER) {
       // eslint-disable-next-line no-console
       console.error('Server error:', e);
     });
-  });
-
-  /* CUSTOM MIDDLEWARE */
-
-  // We can set custom middleware to be processed on the server.  This gives us
-  // fine-grain control over headers, requests, responses etc, and even decide
-  // if we want to avoid the React handler until certain conditions
-
-  // There are two flavours of middleware -- `before` middleware, which
-  // executes in Koa before the per-request Apollo client / Redux store has
-  // been instantiated... and can be called with `confiig.addBeforeMiddleware`
-
-  // ... and 'after' middleware, which runs after per-request instantiation.
-  // Let's use the latter to add a custom header so we can see middleware in action
-  config.addMiddleware(async (ctx, next) => {
-    ctx.set('Powered-By', ctx.engine); // <-- `ctx.engine` from `config.getKoaApp()` above!
-
-    // For the fun of it, let's demonstrate that we can fire Redux actions
-    // and it'll manipulate the state on the server side!  View the SSR version
-    // to see that the counter is now 1 and has been passed down the wire
-    ctx.store.dispatch({ type: 'INCREMENT_COUNTER' });
-
-    // Always return `next()`, otherwise the request won't 'pass' to the next
-    // middleware in the stack (likely, the React handler)
-    return next();
   });
 }
 

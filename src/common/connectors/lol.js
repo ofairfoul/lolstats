@@ -5,9 +5,7 @@ import DataLoader from 'dataloader';
 import { mapValues, toPairs } from 'lodash';
 
 import Limiter from 'common/limiters/limiter';
-import regions from 'static/regions';
-
-const API_KEY = 'RGAPI-3b05f6ba-0b53-4b77-8db2-89a226bb4116';
+import regions from 'staticData/regions';
 
 export const SUMMONERS = 'summoner-v3';
 export const STATIC_DATA = 'static-data-v3';
@@ -44,7 +42,7 @@ export default class LolConnector {
   fetch(requests) {
     const options = {
       headers: {
-        'X-Riot-Token': API_KEY,
+        'X-Riot-Token': process.env.LOL_API_KEY,
       },
       json: true,
     };
@@ -58,18 +56,16 @@ export default class LolConnector {
 
         const uri = `${this.apiRoot}/${path}`;
         return Bluebird.all(limiters.map(l => l()))
-          .then(() => {
-            console.log('requesting');
-            return rp({
-              ...options,
-              uri,
-            });
-          })
+          .then(() => rp({
+            ...options,
+            uri,
+          }))
           .catch(e => {
             if (e.statusCode === 404) {
               return Bluebird.resolve(null);
             }
             if (e.statusCode === 429) {
+              // eslint-disable-next-line no-console
               console.info('429 received', e.response.headers);
             }
             return Promise.reject(e);

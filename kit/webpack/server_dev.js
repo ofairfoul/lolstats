@@ -75,16 +75,12 @@ export default [
       new webpack.DefinePlugin({
         // We ARE running on the server
         SERVER: true,
-        'process.env': {
-          // Point the server host/port to the production server
-          HOST: JSON.stringify(process.env.HOST || 'localhost'),
-          PORT: JSON.stringify(process.env.PORT || '8081'),
-          SSL_PORT: process.env.SSL_PORT ? JSON.stringify(process.env.SSL_PORT) : null,
 
-          // Debug development
-          NODE_ENV: JSON.stringify('development'),
-          DEBUG: true,
-        },
+        'process.env.HOST': JSON.stringify(process.env.HOST || 'localhost'),
+        'process.env.PORT': JSON.stringify(process.env.PORT || '8081'),
+        'process.env.SSL_PORT': process.env.SSL_PORT ? JSON.stringify(process.env.SSL_PORT) : null,
+        'process.env.NODE_ENV': JSON.stringify('development'),
+        'process.env.DEBUG': true,
       }),
 
       // Start the development server

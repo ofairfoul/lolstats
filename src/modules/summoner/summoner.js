@@ -2,8 +2,9 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { graphql } from 'react-apollo';
+import Helmet from 'react-helmet';
+
 import {
-  PageHeader,
   Alert,
   Button,
   Grid,
@@ -51,6 +52,7 @@ export default enhancer(props => {
 
   return (
     <div>
+      <Helmet title="LOLStats - Summoners" />
       <Header />
       <div className="container">
         {(() => {
@@ -114,6 +116,7 @@ export default enhancer(props => {
                   </Col>
                 </Row>
               ))}
+              <Helmet title={`LOLStats - ${summoner.name}`} />
             </Grid>
           );
         })()}

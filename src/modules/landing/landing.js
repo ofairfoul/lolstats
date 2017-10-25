@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from 'common/components/header';
+import Helmet from 'react-helmet';
 
 import {
   Jumbotron,
@@ -7,6 +8,7 @@ import {
 
 export default () => (
   <div>
+    <Helmet title="LOLStats" />
     <Header />
     <div className="container">
       <Jumbotron>

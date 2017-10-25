@@ -16,14 +16,14 @@ const regionLimiters = mapValues(regions, () => {
     Limiter(20, moment.duration(1, 'seconds')),
     Limiter(100, moment.duration(2, 'minutes')),
   ];
-
-  return () => Bluebird.all(limiters.map(limiter => limiter()));
+  return limiters;
 });
 
 const methodLimiters = {
-  '/lol/static-data/v3': Limiter(10, moment.duration(1, 'hour')),
-  '/lol/summoner/v3': Limiter(600, moment.duration(1, 'minute')),
-  '/lol/match/v3/matchlists': Limiter(1000, moment.duration(10, 'seconds')),
+  '/lol/static-data/v3/': Limiter(10, moment.duration(1, 'hour')),
+  '/lol/summoner/v3/': Limiter(600, moment.duration(1, 'minute')),
+  '/lol/match/v3/matchlists/': Limiter(1000, moment.duration(10, 'seconds')),
+  '/lol/match/v3/match/': Limiter(500, moment.duration(10, 'seconds')),
 };
 
 const findMethodLimiters = path => toPairs(methodLimiters)
@@ -50,12 +50,12 @@ export default class LolConnector {
     return Bluebird.all(
       requests.map(path => {
         const limiters = [
-          regionLimiters[this.region],
+          ...regionLimiters[this.region],
           ...findMethodLimiters(path),
         ];
 
         const uri = `${this.apiRoot}/${path}`;
-        return Bluebird.all(limiters.map(l => l()))
+        return Promise.all(limiters.map(l => l()))
           .then(() => rp({
             ...options,
             uri,
@@ -66,7 +66,7 @@ export default class LolConnector {
             }
             if (e.statusCode === 429) {
               // eslint-disable-next-line no-console
-              console.info('429 received', e.response.headers);
+              console.info('429 received', uri, e.response.headers);
             }
             return Promise.reject(e);
           });

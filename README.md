@@ -10,7 +10,7 @@ Start development server
 
     $ LOL_API_KEY=XXX npm run start
 
-#### Or with docker
+#### Or with Docker
 
 Add your `LOL_API_KEY` to `docker-compose.dev.yml`
 
@@ -18,7 +18,7 @@ Add your `LOL_API_KEY` to `docker-compose.dev.yml`
 
 ### Production
 
-Production build is a docker container running on Heroku
+Production build is a Docker container running on Heroku
 
     $ heroku create
     $ heroku config:set LOL_API_KEY=XXX

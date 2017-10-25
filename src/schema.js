@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 import { makeExecutableSchema } from 'graphql-tools';
-import Bluebird from 'bluebird';
-
+import moment from 'moment';
 import { mapValues } from 'lodash';
 
 import { Summoners, Matchlists, Champions } from 'modules/summoner/models';
@@ -21,7 +20,7 @@ const rootSchema = [`
   type Matchlist {
     id: ID
     champion: Champion
-    timestamp: Int
+    timestamp: String
   }
 
   type Summoner {
@@ -73,6 +72,7 @@ const rootResolvers = {
 
   Matchlist: {
     id: ({ gameId }) => gameId,
+    timestamp: ({ timestamp }) => moment(timestamp).format(),
     champion: ({ champion }, args, context) =>
       context.Champions.getById(champion),
   },

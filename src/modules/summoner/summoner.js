@@ -14,6 +14,7 @@ import {
 } from 'react-bootstrap';
 import FontAwesome from 'react-fontawesome';
 import { get } from 'lodash';
+import moment from 'moment';
 
 import Header from 'common/components/header';
 
@@ -99,7 +100,7 @@ export default enhancer(props => {
                 <Col xs={12}><h3>Recent Matches</h3></Col>
               </Row>
               { summoner.recentMatchlists && summoner.recentMatchlists.map(m => (
-                <Row key={m.id} className={css.match}>
+                <Row key={m.timestamp} className={css.match}>
                   <Col xs={3} sm={2} lg={1}>
                     <Image thumbnail src={m.champion.championIcon} />
                   </Col>
@@ -107,6 +108,9 @@ export default enhancer(props => {
                     <h4>
                       {m.champion.name} <small className="text-muted">{m.champion.title}</small>
                     </h4>
+                    <p>
+                      {moment(m.timestamp).fromNow()}
+                    </p>
                   </Col>
                 </Row>
               ))}

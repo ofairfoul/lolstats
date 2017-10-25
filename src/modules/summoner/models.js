@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, chain } from 'lodash';
 
 export class Summoners {
   constructor({ connector }) {
@@ -27,7 +27,7 @@ export class Champions {
   }
 
   getById(id) {
-    return this.connector.get(`/lol/static-data/v3/champions/${id}`)
-      .then(ml => ml.matches);
+    return this.connector.get('/lol/static-data/v3/champions')
+      .then(({ data }) => chain(data).values().find({ id }).value());
   }
 }

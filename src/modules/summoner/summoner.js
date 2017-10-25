@@ -87,20 +87,27 @@ export default enhancer(props => {
           return (
             <Grid>
               <Row className={css.summary}>
-                <Col xs={2}>
+                <Col xs={4} sm={3} lg={2}>
                   <Image thumbnail src={summoner.profileIcon} />
                 </Col>
-                <Col xs={10}>
+                <Col xs={8} sm={9} lg={10}>
                   <h2>{summoner.name}</h2>
                   <p>Level: <Badge>{summoner.summonerLevel}</Badge></p>
                 </Col>
               </Row>
               <Row>
-                <Col><h3>Matches</h3></Col>
+                <Col xs={12}><h3>Recent Matches</h3></Col>
               </Row>
               { summoner.recentMatchlists && summoner.recentMatchlists.map(m => (
-                <Row key={m.id}>
-                  <Col>{m.id}</Col>
+                <Row key={m.id} className={css.match}>
+                  <Col xs={3} sm={2} lg={1}>
+                    <Image thumbnail src={m.champion.championIcon} />
+                  </Col>
+                  <Col xs={9} sm={10} lg={11}>
+                    <h4>
+                      {m.champion.name} <small className="text-muted">{m.champion.title}</small>
+                    </h4>
+                  </Col>
                 </Row>
               ))}
             </Grid>

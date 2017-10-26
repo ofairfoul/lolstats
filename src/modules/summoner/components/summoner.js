@@ -26,7 +26,7 @@ import css from './summoner.less';
 const enhancer = compose(
   withRouter,
   withProps(({ match: { params: { summoner: summonerName, region } } }) =>
-    ({ summonerName, region })),
+    ({ summonerName: decodeURIComponent(summonerName), region })),
   graphql(summonerQuery, {
     options: ({ summonerName, region }) => ({
       variables: { summonerName, region },
@@ -65,9 +65,13 @@ const SummonerNotFound = ({ summonerName, region }) => (
     <h4>Unable to find summoner!</h4>
     <p>
       The summoner with the name
+      {' '}
       <b>{summonerName}</b>
+      {' '}
       was not found in the
+      {' '}
       <b>{region}</b>
+      {' '}
       region.
     </p>
     <p>You can try changing region in the menu to search again.</p>

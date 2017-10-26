@@ -1,4 +1,5 @@
 import { get, chain } from 'lodash';
+import buildPath from 'common/util/buildPath';
 
 export class Summoners {
   constructor({ connector }) {
@@ -6,7 +7,11 @@ export class Summoners {
   }
 
   getSummonerByName(summonerName) {
-    return this.connector.get(`/lol/summoner/v3/summoners/by-name/${summonerName}`);
+    const path = buildPath(
+      '/lol/summoner/v3/summoners/by-name/:summonerName',
+      { summonerName },
+    );
+    return this.connector.get(path);
   }
 }
 
@@ -16,7 +21,11 @@ export class Matchlists {
   }
 
   getRecentByAccount(accountId) {
-    return this.connector.get(`/lol/match/v3/matchlists/by-account/${accountId}/recent`)
+    const path = buildPath(
+      '/lol/match/v3/matchlists/by-account/:accountId/recent',
+      { accountId },
+    );
+    return this.connector.get(path)
       .then(ml => get(ml, 'matches', []));
   }
 }

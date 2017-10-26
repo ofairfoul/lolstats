@@ -108,7 +108,7 @@ const createNeworkInterface = (() => {
   // For a local interface, we want to allow passing in the request's
   // context object, which can then feed through to our GraphQL queries to
   // extract pertinent information and manipulate the response
-  function localInterface(context) {
+  function localInterface() {
     return apolloLocalQuery.createLocalInterface(
       graphql,
       config.graphQLSchema,
@@ -337,7 +337,7 @@ if (config.graphQLServer) {
   // to listen to POST requests
   router.post(
     config.graphQLEndpoint,
-    graphqlKoa(context => ({
+    graphqlKoa(() => ({
       // Bind the current request context, so it's accessible within GraphQL
       // Attach the GraphQL schema
       schema: config.graphQLSchema,

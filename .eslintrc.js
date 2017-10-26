@@ -44,7 +44,7 @@ module.exports = {
     'react/prefer-stateless-function': [2, { ignorePureComponents: true }],
     'react/no-multi-comp': 0,
     'react/jsx-closing-bracket-location': [1, 'after-props'],
-    'react/prop-types': [1, {
+    'react/prop-types': [0, {
       ignore: [
         // `dispatch` is typically used by Redux `@connect`
         'dispatch',

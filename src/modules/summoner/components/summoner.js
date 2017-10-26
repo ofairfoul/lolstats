@@ -40,6 +40,82 @@ const enhancer = compose(
   }),
 );
 
+const Error = ({ refetch }) => (
+  <Alert bsStyle="danger">
+    <h4>Error loading summoner!</h4>
+    <p>
+      <Button bsStyle="danger" onClick={refetch}>Try again</Button>
+    </p>
+  </Alert>
+);
+
+const Loading = () => (
+  <div className="text-center">
+    <p>
+      <FontAwesome name="circle-o-notch" spin size="3x" />
+    </p>
+    <p>
+      Loading
+    </p>
+  </div>
+);
+
+const SummonerNotFound = ({ summonerName, region }) => (
+  <Alert bsStyle="info">
+    <h4>Unable to find summoner!</h4>
+    <p>
+      The summoner with the name
+      <b>{summonerName}</b>
+      was not found in the
+      <b>{region}</b>
+      region.
+    </p>
+    <p>You can try changing region in the menu to search again.</p>
+  </Alert>
+);
+
+const Summary = ({ summoner }) => (
+  <Grid>
+    <Helmet title={`LOLStats - ${summoner.name}`} />
+    <Row className={css.summary}>
+      <Col xs={4} sm={3} lg={2}>
+        <Image thumbnail src={summoner.profileIcon} />
+      </Col>
+      <Col xs={8} sm={9} lg={10}>
+        <h2>{summoner.name}</h2>
+        <p>Level: <Badge>{summoner.summonerLevel}</Badge></p>
+      </Col>
+    </Row>
+  </Grid>
+);
+
+const Match = ({ match }) => (
+  <Row key={match.timestamp} className={css.match}>
+    <Col xs={3} sm={2} lg={1}>
+      <Image thumbnail src={match.champion.championIcon} />
+    </Col>
+    <Col xs={9} sm={10} lg={11}>
+      <h4>
+        {match.champion.name} <small className="text-muted">{match.champion.title}</small>
+      </h4>
+      <p>
+        {moment(match.timestamp).fromNow()}
+      </p>
+    </Col>
+  </Row>
+);
+
+const MatchList = ({ recentMatchlists }) => (
+  <Grid>
+    <Row>
+      <Col xs={12}><h3>Recent Matches</h3></Col>
+    </Row>
+    { recentMatchlists && recentMatchlists.map(match => (
+      <Match match={match} />
+    ))}
+  </Grid>
+);
+
 export default enhancer(props => {
   const {
     error,
@@ -57,67 +133,19 @@ export default enhancer(props => {
       <div className="container">
         {(() => {
           if (error) {
-            return (
-              <Alert bsStyle="danger">
-                <h4>Error loading summoner!</h4>
-                <p>
-                  <Button bsStyle="danger" onClick={refetch}>Try again</Button>
-                </p>
-              </Alert>
-            );
+            return (<Error refetch={refetch} />);
           }
           if (loading) {
-            return (
-              <div className="text-center">
-                <p>
-                  <FontAwesome name="circle-o-notch" spin size="3x" />
-                </p>
-                <p>
-                  Loading
-                </p>
-              </div>
-            );
+            return (<Loading />);
           }
           if (!summoner) {
-            return (
-              <Alert bsStyle="info">
-                <h4>Unable to find summoner!</h4>
-                <p>The summoner with the name <b>{summonerName}</b> was not found in the <b>{region}</b> region.</p>
-                <p>You can try changing region in the menu to search again.</p>
-              </Alert>
-            );
+            return (<SummonerNotFound summonerName={summonerName} region={region} />);
           }
           return (
-            <Grid>
-              <Row className={css.summary}>
-                <Col xs={4} sm={3} lg={2}>
-                  <Image thumbnail src={summoner.profileIcon} />
-                </Col>
-                <Col xs={8} sm={9} lg={10}>
-                  <h2>{summoner.name}</h2>
-                  <p>Level: <Badge>{summoner.summonerLevel}</Badge></p>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={12}><h3>Recent Matches</h3></Col>
-              </Row>
-              { summoner.recentMatchlists && summoner.recentMatchlists.map(m => (
-                <Row key={m.timestamp} className={css.match}>
-                  <Col xs={3} sm={2} lg={1}>
-                    <Image thumbnail src={m.champion.championIcon} />
-                  </Col>
-                  <Col xs={9} sm={10} lg={11}>
-                    <h4>
-                      {m.champion.name} <small className="text-muted">{m.champion.title}</small>
-                    </h4>
-                    <p>
-                      {moment(m.timestamp).fromNow()}
-                    </p>
-                  </Col>
-                </Row>
-              ))}
-              <Helmet title={`LOLStats - ${summoner.name}`} />
-            </Grid>
+            <div>
+              <Summary summoner={summoner} />
+              <MatchList recentMatchlists={summoner.recentMatchlists} />
+            </div>
           );
         })()}
       </div>

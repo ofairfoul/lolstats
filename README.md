@@ -2,6 +2,8 @@
 
 ### Development
 
+Requires node 8 and yarn
+
 Install dependencies
 
     $ yarn
@@ -18,7 +20,7 @@ Add your `LOL_API_KEY` to `docker-compose.dev.yml`
 
 ### Production
 
-Production build is a Docker container running on Heroku
+Requires Docker and Heroku CLI.
 
     $ heroku create
     $ heroku config:set LOL_API_KEY=XXX

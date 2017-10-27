@@ -10,7 +10,13 @@ Install dependencies
 
 Start development server
 
-    $ LOL_API_KEY=XXX npm run start
+    $ LOL_API_KEY=XXX npm start
+
+Run tests
+
+    $ npm test
+
+
 
 #### Or with Docker
 

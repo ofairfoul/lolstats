@@ -40,7 +40,7 @@ const enhancer = compose(
   }),
 );
 
-const Error = ({ refetch }) => (
+export const Error = ({ refetch }) => (
   <Alert bsStyle="danger">
     <h4>Error loading summoner!</h4>
     <p>
@@ -49,7 +49,7 @@ const Error = ({ refetch }) => (
   </Alert>
 );
 
-const Loading = () => (
+export const Loading = () => (
   <div className="text-center">
     <p>
       <FontAwesome name="circle-o-notch" spin size="3x" />
@@ -60,7 +60,7 @@ const Loading = () => (
   </div>
 );
 
-const SummonerNotFound = ({ summonerName, region }) => (
+export const SummonerNotFound = ({ summonerName, region }) => (
   <Alert bsStyle="info">
     <h4>Unable to find summoner!</h4>
     <p>
@@ -78,7 +78,7 @@ const SummonerNotFound = ({ summonerName, region }) => (
   </Alert>
 );
 
-const Summary = ({ summoner }) => (
+export const Summary = ({ summoner }) => (
   <Grid>
     <Helmet title={`LOLStats - ${summoner.name}`} />
     <Row className={css.summary}>
@@ -93,7 +93,7 @@ const Summary = ({ summoner }) => (
   </Grid>
 );
 
-const Match = ({ match }) => (
+export const Match = ({ match }) => (
   <Row key={match.timestamp} className={css.match}>
     <Col xs={3} sm={2} lg={1}>
       <Image thumbnail src={match.champion.championIcon} />
@@ -109,7 +109,7 @@ const Match = ({ match }) => (
   </Row>
 );
 
-const MatchList = ({ recentMatchlists }) => (
+export const MatchList = ({ recentMatchlists }) => (
   <Grid>
     <Row>
       <Col xs={12}><h3>Recent Matches</h3></Col>
@@ -120,7 +120,7 @@ const MatchList = ({ recentMatchlists }) => (
   </Grid>
 );
 
-export default enhancer(props => {
+export const Summoner = props => {
   const {
     error,
     loading,
@@ -155,4 +155,6 @@ export default enhancer(props => {
       </div>
     </div>
   );
-});
+};
+
+export default enhancer(Summoner);

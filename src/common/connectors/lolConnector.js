@@ -31,8 +31,9 @@ const findMethodLimiters = path => toPairs(methodLimiters)
   .map(([, limiter]) => limiter);
 
 export default class LolConnector {
-  constructor({ region } = {}) {
+  constructor({ region, requestPromise = rp } = {}) {
     this.region = region;
+    this.rp = requestPromise;
     this.apiRoot = `https://${regions[region].api}`;
     this.loader = new DataLoader(this.fetch.bind(this), {
       batch: false,
@@ -54,9 +55,9 @@ export default class LolConnector {
           ...findMethodLimiters(path),
         ];
 
-        const uri = `${this.apiRoot}/${path}`;
+        const uri = `${this.apiRoot}${path}`;
         return Promise.all(limiters.map(l => l()))
-          .then(() => rp({
+          .then(() => this.rp({
             ...options,
             uri,
           }))

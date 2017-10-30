@@ -1,14 +1,16 @@
 import { last } from 'lodash';
 import Bluebird from 'bluebird';
+import rp from 'request-promise';
 import LolConnector from '../lolConnector';
+
+jest.mock('request-promise', () => jest.fn());
 
 describe('Connectors', () => {
   describe('LolConnector', () => {
     let connector;
-    let rp;
     beforeEach(() => {
-      rp = jest.fn(() => Bluebird.resolve());
-      connector = new LolConnector({ region: 'NA', requestPromise: rp });
+      rp.mockClear();
+      connector = new LolConnector({ region: 'NA' });
     });
 
     it('Happy path', () => {

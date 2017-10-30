@@ -24,7 +24,7 @@ describe('components', () => {
       const summonerName = 'Fred';
       const region = 'NA';
       const summoner = shallow(
-        <Summoner summoner={null} summonerName={summonerName} region={region} />,
+        <Summoner summonerName={summonerName} region={region} />,
       );
       expect(summoner.contains(<SummonerNotFound summonerName={summonerName} region={region} />))
         .toBe(true);
